@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { makeStyles } from "@material-ui/core/styles";
+import LoginForm from './components/account/login.jsx';
+import { UserProvider, useUser } from './context/user-provider.jsx';
+import { initAxiosInterceptors } from "./helpers/auth-helper.js";
+import NavBar from "./components/navigation/auth-route.jsx";
 
+
+export default () => <UserProvider>
+  <App></App>
+</UserProvider>;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    textAlign: "center",
+  }
+}));
+initAxiosInterceptors();
 function App() {
+  const classes = useStyles();
+  const { loadingUser } = useUser();
+  if (!loadingUser) {
+    return (
+      <div className={classes.root}>
+        <NavBar></NavBar>
+      </div>
+    );
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.root}>
+      <LoginForm></LoginForm>
     </div>
   );
 }
-
-export default App;
