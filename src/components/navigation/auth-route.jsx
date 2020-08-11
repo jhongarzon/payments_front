@@ -7,21 +7,23 @@ import Tab from '@material-ui/core/Tab';
 import AppsIcon from '@material-ui/icons/Apps';
 import WorkIcon from '@material-ui/icons/Work';
 import PeopleIcon from '@material-ui/icons/People';
-//import ListClients from "../../components/clients/list-clients.jsx";
-import ListProducts from "../products/show-products.jsx";
-//import UsersForm from "../users/usersForm.jsx";
-//import AppsForm from "../../components/apps/appsForm.jsx";
-//import RolesForm from "../../components/roles/rolesForm.jsx";
+import Home from "../../components/home/home.jsx";
+import ShowProducts from "../../components/products/show-products.jsx";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { useUser } from "../../context/user-provider.jsx";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../../components/payments/checkout-form";
+import productsApi from "../../components/products/products-api";
+
 
 export default function NavBar() {
 
 
-    const allTabs = ['/products'];
+    const allTabs = ['/home', '/products', '/checkout'];
     const useStyles = makeStyles((theme) => ({
         root: {
             flexGrow: 1,
@@ -38,13 +40,14 @@ export default function NavBar() {
     function handleLogout() {
         logout();
     }
+    const stripePromise = productsApi.getPublicStripeKey().then(key => loadStripe(key));
     return (
         <div>
             <Fragment>
                 <AppBar position="static" color="secondary" >
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            Payment Management App
+                            Security Management App
                         </Typography>
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                     </Toolbar>
@@ -52,7 +55,7 @@ export default function NavBar() {
             </Fragment>
             <BrowserRouter>
                 <Route
-                    path="/"
+                    path=""
                     render={({ location }) => (
                         <Fragment>
                             <Paper square>
@@ -62,16 +65,33 @@ export default function NavBar() {
                                     selectionFollowsFocus
                                     textColor="secondary">
                                     <Tab icon={<AppsIcon />}
+                                        label="Home"
+                                        value="/home"
+                                        component={Link}
+                                        to={allTabs[0]} />
+                                    <Tab icon={<PeopleIcon />}
                                         label="Products"
                                         value="/products"
                                         component={Link}
-                                        to={allTabs[0]} />
+                                        to={allTabs[1]} />
+                                    <Tab icon={<WorkIcon />}
+                                        label="Checkout"
+                                        value="/checkout"
+                                        component={Link}
+                                        to={allTabs[2]}
+                                    />
                                 </Tabs>
                             </Paper>
                             <Switch>
-                                <Route path={allTabs[0]}>
-                                    <ListProducts></ListProducts>
-                                </Route>                                
+                                <Route path={allTabs[0]} render={() => <Home></Home>} />
+                                <Route path={allTabs[1]}>
+                                    <ShowProducts></ShowProducts>
+                                </Route>
+                                <Route path={allTabs[2]}
+                                    render={() =>
+                                        <Elements stripe={stripePromise}>
+                                            <CheckoutForm />
+                                        </Elements>} />
                             </Switch>
                         </Fragment>
                     )}

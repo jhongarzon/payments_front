@@ -3,10 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import InfoIcon from '@material-ui/icons/Info';
+
 import api from '../../lib/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShowProducts() {
 
-    const [rows, setRows] = useState([]);
-    const [selectedRow, setSelectedRow] = useState(0);
+    const [rows, setRows] = useState([]);    
     useEffect(() => {
         async function loadApps() {
             const url = "api/v1/products.json"; //?fields[apps]=code,name
@@ -48,7 +46,7 @@ export default function ShowProducts() {
         <div className={classes.root}>
             <GridList cellHeight={200} spacing={1} className={classes.gridList}>
                 {rows.map((tile) => (
-                    <GridListTile key={tile.image} cols={tile.is_enabled ? 2 : 1} rows={tile.is_enabled ? 2 : 1}>
+                    <GridListTile key={tile.id} cols={tile.is_enabled ? 2 : 1} rows={tile.is_enabled ? 2 : 1}>
                         <img src={tile.image} alt={tile.name} />
                         <GridListTileBar
                             title={tile.title}
