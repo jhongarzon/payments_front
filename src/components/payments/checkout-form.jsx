@@ -17,21 +17,32 @@ export default function CheckoutForm() {
     useEffect(() => {
         // Step 1: Fetch product details such as amount and currency from
         // API to make sure it can't be tampered with in the client.
-        productsApi.getProductDetails(2).then((productDetails) => {
+        // var productDetails = await productsApi.getProductDetails(2).then((productDetails) => {            
+        //     setAmount(Math.round(productDetails.price));
+        //     setCurrency(productDetails.currency.name);
+        // });
+        async function loadProductDetails() {
+            var productDetails = await productsApi.getProductDetails(2);
+            var roundedAmount = Math.round(productDetails.price);
+            var currency = productDetails.currency.name;
+            setAmount(roundedAmount);
+            setCurrency(currency);
             debugger;
-            setAmount(productDetails.price / 100);
-            setCurrency(productDetails.currency.name);
-        });
+            // Step 2: Create PaymentIntent over Stripe API
+            productsApi
+                .createPaymentIntent(roundedAmount, currency)
+                .then((clientSecret) => {
+                    setClientSecret(clientSecret);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                });
+        }
+        loadProductDetails();
 
-        // Step 2: Create PaymentIntent over Stripe API
-        productsApi
-            .createPaymentIntent(amount, currency)
-            .then((clientSecret) => {
-                setClientSecret(clientSecret);
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
+
+
+
     }, []);
 
     const handleSubmit = async (ev) => {

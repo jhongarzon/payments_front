@@ -3,14 +3,13 @@ import api from '../../lib/api';
 const getProductDetails = (productId) => {
     const url = "api/v1/products.json?include=currency&fields[products]=price&filter[id]=" + productId;
     return api.get(url)
-        .then(res => {            
+        .then(res => {
             if (res.status === 200) {
                 return res.data;
             } else {
                 return null;
             }
         }).then(data => {            
-            debugger;
             if (!data || data.error || data.data == null || data.data[0] == null) {
                 console.log("API error:", { data });
                 throw Error("API Error");
@@ -21,16 +20,18 @@ const getProductDetails = (productId) => {
 };
 
 const createPaymentIntent = (amount, currency) => {
-    const url = "api/v1/create_payment_intents";
-    return api.post(url)
+    debugger;
+    const url = "api/v1/payment_intents";
+    return api.post(url, { amount, currency })
         .then(res => {
             if (res.status === 200) {
-                return res.json();
+                return res.data;
             } else {
                 return null;
             }
         }).then(data => {
-            if (!data || data.error || data.data == null || data.data[0] == null) {
+            debugger;
+            if (!data || data.error) {
                 console.log("API error:", { data });
                 throw new Error("PaymentIntent API Error");
             } else {
@@ -41,8 +42,7 @@ const createPaymentIntent = (amount, currency) => {
 const getPublicStripeKey = options => {
     const url = "getstripeKey";
     return api.get(url)
-        .then(res => {
-            debugger;
+        .then(res => {            
             if (res.status === 200) {
                 return res.data;
             } else {
