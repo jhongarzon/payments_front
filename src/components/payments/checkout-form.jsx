@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import "../payments/checkout-form.css";
 import productsApi from "../products/products-api";
+import { useUser } from '../../context/user-provider.jsx';
 
-export default function CheckoutForm() {
+export default function CheckoutForm(props) {
     const [amount, setAmount] = useState(0);
     const [currency, setCurrency] = useState("");
     const [clientSecret, setClientSecret] = useState(null);
@@ -13,18 +14,18 @@ export default function CheckoutForm() {
     const [processing, setProcessing] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
+    const { user } = useUser();
+    // const [selectedProduct, setSelectedProduct] = useState({ name: "", price:0, description: "", image: "" });
+
+    // setSelectedProduct(props.product);
+    debugger;
 
     useEffect(() => {
-        // Step 1: Fetch product details such as amount and currency from
-        // API to make sure it can't be tampered with in the client.
-        // var productDetails = await productsApi.getProductDetails(2).then((productDetails) => {            
-        //     setAmount(Math.round(productDetails.price));
-        //     setCurrency(productDetails.currency.name);
-        // });
+
         async function loadProductDetails() {
-            var productDetails = await productsApi.getProductDetails(2);
-            var roundedAmount = Math.round(productDetails.price);
-            var currency = productDetails.currency.name;
+
+            var roundedAmount = Math.round(props.product.price);
+            var currency = props.product.currency.name;
             setAmount(roundedAmount);
             setCurrency(currency);
             debugger;
@@ -105,44 +106,47 @@ export default function CheckoutForm() {
         };
 
         return (
-            <form onSubmit={handleSubmit}>
-                <h1>
-                    {currency.toLocaleUpperCase()}{" "}
-                    {amount.toLocaleString(navigator.language, {
-                        minimumFractionDigits: 2,
-                    })}{" "}
-                </h1>
-                <h4>Pre-order the Pasha package</h4>
+            <div className="chk_container">
+                <form onSubmit={handleSubmit} className="frm">
+                    <h1>
+                        {currency.toLocaleUpperCase()}{" "}
+                        {amount.toLocaleString(navigator.language, {
+                            minimumFractionDigits: 2,
+                        })}{" "}
+                    </h1>
+                    <h4>Pre-order</h4>
 
-                <div className="sr-combo-inputs">
-                    <div className="sr-combo-inputs-row">
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Name"
-                            autoComplete="cardholder"
-                            className="sr-input"
-                        />
+                    <div className="sr-combo-inputs">
+                        <div className="sr-combo-inputs-row">
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Name"
+                                autoComplete="cardholder"
+                                className="sr-input"
+                                defaultValue={user?.user?.name}
+                            />
+                        </div>
+
+                        <div className="sr-combo-inputs-row">
+                            <CardElement
+                                className="sr-input sr-card-element"
+                                options={options}
+                            />
+                        </div>
                     </div>
 
-                    <div className="sr-combo-inputs-row">
-                        <CardElement
-                            className="sr-input sr-card-element"
-                            options={options}
-                        />
-                    </div>
-                </div>
+                    {error && <div className="message sr-field-error">{error}</div>}
 
-                {error && <div className="message sr-field-error">{error}</div>}
-
-                <button
-                    className="btn"
-                    disabled={processing || !clientSecret || !stripe}
-                >
-                    {processing ? "Processing…" : "Pay"}
-                </button>
-            </form>
+                    <button
+                        className="btn"
+                        disabled={processing || !clientSecret || !stripe}
+                    >
+                        {processing ? "Processing…" : "Pay"}
+                    </button>
+                </form>
+            </div>
         );
     };
 

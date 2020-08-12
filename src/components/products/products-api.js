@@ -19,8 +19,7 @@ const getProductDetails = (productId) => {
         });
 };
 
-const createPaymentIntent = (amount, currency) => {
-    debugger;
+const createPaymentIntent = (amount, currency) => {    
     const url = "api/v1/payment_intents";
     return api.post(url, { amount, currency })
         .then(res => {
@@ -29,8 +28,7 @@ const createPaymentIntent = (amount, currency) => {
             } else {
                 return null;
             }
-        }).then(data => {
-            debugger;
+        }).then(data => {            
             if (!data || data.error) {
                 console.log("API error:", { data });
                 throw new Error("PaymentIntent API Error");
@@ -41,8 +39,9 @@ const createPaymentIntent = (amount, currency) => {
 };
 const getPublicStripeKey = options => {
     const url = "getstripeKey";
+    
     return api.get(url)
-        .then(res => {            
+        .then(res => {                      
             if (res.status === 200) {
                 return res.data;
             } else {

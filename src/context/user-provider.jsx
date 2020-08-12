@@ -38,8 +38,12 @@ export function UserProvider(props) {
                 setLoadingUser(false);
             })
             .catch((error) => {
-                console.error("catch");
-                console.error(error);
+                console.error(error);                
+                if (error.error && error.error.user_authentication){
+                    alert(error.error.user_authentication);
+                }else{
+                    alert(error);
+                }
             });
     }
 

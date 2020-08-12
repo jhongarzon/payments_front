@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AppsIcon from '@material-ui/icons/Apps';
-import WorkIcon from '@material-ui/icons/Work';
+// import WorkIcon from '@material-ui/icons/Work';
 import PeopleIcon from '@material-ui/icons/People';
 import Home from "../../components/home/home.jsx";
 import ShowProducts from "../../components/products/show-products.jsx";
@@ -14,10 +14,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { useUser } from "../../context/user-provider.jsx";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../../components/payments/checkout-form";
-import productsApi from "../../components/products/products-api";
+// import { loadStripe } from "@stripe/stripe-js";
+// import { Elements } from "@stripe/react-stripe-js";
+// import CheckoutForm from "../../components/payments/checkout-form";
+// import productsApi from "../../components/products/products-api";
 
 
 export default function NavBar() {
@@ -40,14 +40,14 @@ export default function NavBar() {
     function handleLogout() {
         logout();
     }
-    const stripePromise = productsApi.getPublicStripeKey().then(key => loadStripe(key));
+    // const stripePromise = productsApi.getPublicStripeKey().then(key => loadStripe(key));
     return (
         <div>
             <Fragment>
                 <AppBar position="static" color="secondary" >
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            Security Management App
+                            Stripe payment
                         </Typography>
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                     </Toolbar>
@@ -74,12 +74,12 @@ export default function NavBar() {
                                         value="/products"
                                         component={Link}
                                         to={allTabs[1]} />
-                                    <Tab icon={<WorkIcon />}
+                                    {/* <Tab icon={<WorkIcon />}
                                         label="Checkout"
                                         value="/checkout"
                                         component={Link}
                                         to={allTabs[2]}
-                                    />
+                                    /> */}
                                 </Tabs>
                             </Paper>
                             <Switch>
@@ -87,11 +87,11 @@ export default function NavBar() {
                                 <Route path={allTabs[1]}>
                                     <ShowProducts></ShowProducts>
                                 </Route>
-                                <Route path={allTabs[2]}
+                                {/* <Route path={allTabs[2]}
                                     render={() =>
                                         <Elements stripe={stripePromise}>
                                             <CheckoutForm />
-                                        </Elements>} />
+                                        </Elements>} /> */}
                             </Switch>
                         </Fragment>
                     )}
