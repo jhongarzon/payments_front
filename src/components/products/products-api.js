@@ -9,7 +9,7 @@ const getProductDetails = (productId) => {
             } else {
                 return null;
             }
-        }).then(data => {            
+        }).then(data => {
             if (!data || data.error || data.data == null || data.data[0] == null) {
                 console.log("API error:", { data });
                 throw Error("API Error");
@@ -19,29 +19,47 @@ const getProductDetails = (productId) => {
         });
 };
 
-const createPaymentIntent = (amount, currency) => {    
+const createPaymentIntent = (amount, currency, currencyId, productId) => {
     const url = "api/v1/payment_intents";
-    return api.post(url, { amount, currency })
+    return api.post(url, { amount, currency, currency_id: currencyId, product_id: productId })
         .then(res => {
             if (res.status === 200) {
                 return res.data;
             } else {
                 return null;
             }
-        }).then(data => {            
+        }).then(data => {
             if (!data || data.error) {
                 console.log("API error:", { data });
                 throw new Error("PaymentIntent API Error");
             } else {
-                return data.client_secret;
+                return data;
+            }
+        });
+};
+const paymentResult = (paymentIntentId, status,productId) => {
+    const url = "api/v1/payments";
+    return api.post(url, { payment_intent_id: paymentIntentId, status, product_id: productId})
+        .then(res => {
+            if (res.status === 200) {
+                return res.data;
+            } else {
+                return null;
+            }
+        }).then(data => {
+            if (!data || data.error) {
+                console.log("API error:", { data });
+                throw new Error("PaymentIntent API Error");
+            } else {
+                return data.success;
             }
         });
 };
 const getPublicStripeKey = options => {
     const url = "getstripeKey";
-    
+
     return api.get(url)
-        .then(res => {                      
+        .then(res => {
             if (res.status === 200) {
                 return res.data;
             } else {
@@ -59,6 +77,7 @@ const getPublicStripeKey = options => {
 
 const productsApi = {
     createPaymentIntent,
+    paymentResult,
     getPublicStripeKey: getPublicStripeKey,
     getProductDetails: getProductDetails
 };

@@ -15,7 +15,7 @@ export default function ProductDetail(props) {
                 onClose={props.close}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description">
-                <DialogTitle id="alert-dialog-title">{props.product.name}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{props.product.name} {props.product.currency.name} {props.product.price}</DialogTitle>
                 <DialogContent>
                     <DialogContent>
                         <div style={{ width: "100%", alignItems:"center" }}>

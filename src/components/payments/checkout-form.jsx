@@ -8,17 +8,15 @@ export default function CheckoutForm(props) {
     const [amount, setAmount] = useState(0);
     const [currency, setCurrency] = useState("");
     const [clientSecret, setClientSecret] = useState(null);
+    const [paymentIntentId, setPaymentIntentId] = useState(null);
+    const [productId, setProductId] = useState(null);
     const [error, setError] = useState(null);
     const [metadata, setMetadata] = useState(null);
     const [succeeded, setSucceeded] = useState(false);
     const [processing, setProcessing] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
-    const { user } = useUser();
-    // const [selectedProduct, setSelectedProduct] = useState({ name: "", price:0, description: "", image: "" });
-
-    // setSelectedProduct(props.product);
-    debugger;
+    const { user } = useUser();  
 
     useEffect(() => {
 
@@ -26,14 +24,18 @@ export default function CheckoutForm(props) {
 
             var roundedAmount = Math.round(props.product.price);
             var currency = props.product.currency.name;
+            var currencyId = props.product.currency.id;
+            var prodId = props.product.id;
+            setProductId(prodId);
             setAmount(roundedAmount);
             setCurrency(currency);
-            debugger;
-            // Step 2: Create PaymentIntent over Stripe API
+         
+
             productsApi
-                .createPaymentIntent(roundedAmount, currency)
-                .then((clientSecret) => {
-                    setClientSecret(clientSecret);
+                .createPaymentIntent(roundedAmount, currency, currencyId, prodId)
+                .then((result) => {
+                    setPaymentIntentId(result.payment_intent_id);
+                    setClientSecret(result.client_secret);
                 })
                 .catch((err) => {
                     setError(err.message);
@@ -50,8 +52,7 @@ export default function CheckoutForm(props) {
         ev.preventDefault();
         setProcessing(true);
 
-        // Step 3: Use clientSecret from PaymentIntent and the CardElement
-        // to confirm payment with stripe.confirmCardPayment()
+     
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: elements.getElement(CardElement),
@@ -66,11 +67,19 @@ export default function CheckoutForm(props) {
             setProcessing(false);
             console.log("[error]", payload.error);
         } else {
-            setError(null);
-            setSucceeded(true);
-            setProcessing(false);
-            setMetadata(payload.paymentIntent);
-            console.log("[PaymentIntent]", payload.paymentIntent);
+             debugger;
+            productsApi
+                .paymentResult(paymentIntentId, payload.paymentIntent.status,productId)
+                .then((result) => {
+                    setError(null);
+                    setSucceeded(true);
+                    setProcessing(false);
+                    setMetadata(payload.paymentIntent);
+                    console.log("[PaymentIntent]", payload.paymentIntent);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                });           
         }
     };
 
