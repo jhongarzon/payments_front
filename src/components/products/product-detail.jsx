@@ -19,6 +19,7 @@ export default function ProductDetail(props) {
                 <DialogContent>
                     <DialogContent>
                         <div style={{ width: "100%", alignItems:"center" }}>
+                            {/* FEEDBACK: is there a better way to serve these images? */}
                             <img src={`http://localhost:3001/api/v1/vandal/assets/img/${props.product.image}`} style={{ height: "50%" }} alt={props.product.name} />
                         </div>
                     </DialogContent>

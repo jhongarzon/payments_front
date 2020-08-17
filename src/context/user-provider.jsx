@@ -63,6 +63,8 @@ export function UserProvider(props) {
     }, [user, loadingUser]);
     return <userContext.Provider value={value} {...props}></userContext.Provider>
 }
+
+// FEEDBACK: useful hook
 export function useUser() {
     var context = React.useContext(userContext);
     if (!context) {

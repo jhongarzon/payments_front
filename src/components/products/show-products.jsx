@@ -1,3 +1,4 @@
+// FEEDBACK: see Paisa's comment in Feedback-FE.md
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';

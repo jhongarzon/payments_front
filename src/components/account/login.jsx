@@ -66,6 +66,7 @@ export default function LoginForm() {
                         </TextField>
                     </Grid>
                     <Grid item className={classes.paper}>
+                        {/* FEEDBACK: better to make the handler on the <form> itself so keyboard submit works (usability, accessibility) */}
                         <Button style={{ color: "#f50057"}} onClick={handleLogin}>Sign In</Button>
                     </Grid>
                 </div>

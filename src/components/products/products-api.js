@@ -1,5 +1,6 @@
 import api from '../../lib/api';
 
+// FEEDBACK: this is cool but Spraypaint might make things a lot easier for you. graphiti.dev/js
 const getProductDetails = (productId) => {
     const url = "api/v1/products.json?include=currency&fields[products]=price&filter[id]=" + productId;
     return api.get(url)

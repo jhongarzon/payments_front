@@ -4,6 +4,7 @@ import "../payments/checkout-form.css";
 import productsApi from "../products/products-api";
 import { useUser } from '../../context/user-provider.jsx';
 
+// FEEDBACK: would be cool if this handled someone visiting w/ an empty cart
 export default function CheckoutForm(props) {
     const [amount, setAmount] = useState(0);
     const [currency, setCurrency] = useState("");
@@ -65,8 +66,10 @@ export default function CheckoutForm(props) {
         if (payload.error) {
             setError(`Payment failed: ${payload.error.message}`);
             setProcessing(false);
+            // FEEDBACK: better as console.error() to make it obvious and force handling in prod differently
             console.log("[error]", payload.error);
         } else {
+            // FEEDBACK: debugger left in by accident
              debugger;
             productsApi
                 .paymentResult(paymentIntentId, payload.paymentIntent.status,productId)
