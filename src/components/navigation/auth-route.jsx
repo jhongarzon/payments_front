@@ -59,6 +59,15 @@ export default function NavBar() {
                     render={({ location }) => (
                         <Fragment>
                             <Paper square>
+                                {/* 
+                                FEEDBACK: Getting error when visiting default route, because there's no Tab defined
+                                for default value/route of "/"
+
+                                Material-UI: The value provided to the Tabs component is invalid.
+                                None of the Tabs' children match with `/`.
+                                You can provide one of the following values: /home, /products.
+                                
+                                */}
                                 <Tabs value={location.pathname}
                                     variant="fullWidth"
                                     indicatorColor="secondary"
