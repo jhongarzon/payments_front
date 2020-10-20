@@ -42,7 +42,8 @@ export function UserProvider(props) {
                 if (error.error && error.error.user_authentication){
                     alert(error.error.user_authentication);
                 }else{
-                    alert(error);
+                    console.log(error);
+                    // alert(error);
                 }
             });
     }

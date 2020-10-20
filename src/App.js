@@ -5,31 +5,36 @@ import { UserProvider, useUser } from './context/user-provider.jsx';
 import { initAxiosInterceptors } from "./helpers/auth-helper.js";
 import NavBar from "./components/navigation/auth-route.jsx";
 
-
-export default () => <UserProvider>
-  <App></App>
-</UserProvider>;
-
+export default () => 
+  <App></App>;
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     textAlign: "center",
   }
 }));
-initAxiosInterceptors();
-function App() {
-  const classes = useStyles();
-  const { loadingUser } = useUser();
-  if (!loadingUser) {
-    return (
-      <div className={classes.root}>
-        <NavBar></NavBar>
-      </div>
-    );
-  }
-  return (
-    <div className={classes.root}>
-      <LoginForm></LoginForm>
-    </div>
-  );
+function App(){
+  var i =0;
+  i.dtuyiho();
+
+  return <button type="button" onClick={() => console.error("test")}>   
+  Test Error button 
+</button>
 }
+// initAxiosInterceptors();
+// function App() {
+//   const classes = useStyles();
+//   const { loadingUser } = useUser();
+//   if (!loadingUser) {
+//     return (
+//       <div className={classes.root}>
+//         <NavBar></NavBar>
+//       </div>
+//     );
+//   }
+//   return (
+//     <div className={classes.root}>
+//       <LoginForm></LoginForm>
+//     </div>
+//   );
+// }
