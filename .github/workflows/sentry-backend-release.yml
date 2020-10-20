@@ -19,5 +19,5 @@ jobs:
           SENTRY_PROJECT: omella-backend
         with:
           tagName: ${{ github.ref }}
-          environment: ${{ github.ref }}
+          environment: production
           releaseNamePrefix: backend-
