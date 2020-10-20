@@ -1,0 +1,1 @@
+release: ./send-sourcemaps.sh
