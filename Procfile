@@ -1,1 +1,1 @@
-release: ./send-sourcemaps.sh
+release: send-sourcemaps.sh
