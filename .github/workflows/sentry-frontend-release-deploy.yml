@@ -1,8 +1,8 @@
 name: sentry-frontend-release
 
 on:
-  release:
-    types: [published, prereleased]
+  push:
+     branches: [ master ]
 
 
 jobs:
@@ -19,5 +19,6 @@ jobs:
           SENTRY_PROJECT: omella-frontend
         with:
           tagName: ${{ github.ref }}
-          environment: production
+          environment: staging
           releaseNamePrefix: frontend-
+          sourceMapOptions: '{"include": ["build/static/js"]}'
