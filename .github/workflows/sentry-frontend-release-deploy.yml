@@ -11,14 +11,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
-      - name: Create a Sentry.io release
+      - name: Create a frontend Sentry.io release
         uses: getsentry/action-release@v1.0.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_ORG: omella
+          SENTRY_PROJECT: omella-frontend
         with:
-          tagName: ${{ github.ref }}
+          tagName: ${{ github.sha }}
           environment: production
           version_prefix: front-
-          sourcemaps: maps/
+          sourcemaps: public/api/vandal/js
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create a backend Sentry.io release
+        uses: getsentry/action-release@v1.0.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: omella
+          SENTRY_PROJECT: omella-backend
+        with:
+          tagName: ${{ github.sha }}
+          environment: production
+          version_prefix: back-
