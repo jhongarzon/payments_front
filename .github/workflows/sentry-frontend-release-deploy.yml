@@ -4,19 +4,21 @@ on:
   push:
     branches: [ master ]
 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Sentry Release
-      uses: getsentry/action-release@v1.0.0
-      env:
-	      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-	      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-	      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      with:
-        environment: production
-        sourcemaps: build/static/js
-        tagName: ${{ github.ref }}
-        releaseNamePrefix: frontend-
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create a Sentry.io release
+        uses: tclindner/sentry-releases-action@v1.2.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+	  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+	  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          tagName: ${{ github.ref }}
+          environment: production
+          releaseNamePrefix: frontend-
+          sourcemaps: build/static/js
