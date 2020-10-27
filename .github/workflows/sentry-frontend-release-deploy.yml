@@ -17,8 +17,9 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: omella
           SENTRY_PROJECT: testing_sourcemaps
-	with:
+        with:
           tagName: ${{ github.ref }}
-          environment: production
-          releaseNamePrefix: front-
+          environment: qa
+          releaseNamePrefix: myAwesomeProject-
           sourcemaps: build/static/js
+          	
