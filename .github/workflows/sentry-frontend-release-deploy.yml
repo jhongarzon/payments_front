@@ -21,4 +21,4 @@ jobs:
           tagName: ${{ github.ref }}
           environment: qa
           releaseNamePrefix: myAwesomeProject-
-          sourcemaps: build/static/js
+          sourceMapOptions: '{"include": ["build/static/js"]}'
