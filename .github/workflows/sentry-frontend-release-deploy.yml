@@ -18,7 +18,7 @@ jobs:
           SENTRY_ORG: omella
           SENTRY_PROJECT: testing_sourcemaps
         with:
-          version: ${{ github.ref }}
+          tagName: ${{ github.ref }}
           environment: qa
           releaseNamePrefix: myAwesomeProject-
           sourceMapOptions: '{"include": ["build/static/js"]}'
