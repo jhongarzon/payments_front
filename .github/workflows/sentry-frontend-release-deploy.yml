@@ -22,4 +22,3 @@ jobs:
           environment: qa
           releaseNamePrefix: myAwesomeProject-
           sourcemaps: build/static/js
-          	
