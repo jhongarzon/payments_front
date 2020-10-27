@@ -15,10 +15,10 @@ jobs:
         uses: getsentry/action-release@v1.0.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: omella
-          SENTRY_PROJECT: testing_sourcemaps
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
-          tagName: ${{ github.sha }}
-          environment: qa
-          version_prefix: test-
+          tagName: ${{ github.ref }}
+          environment: production
+          version_prefix: front-
           sourcemaps: maps/
