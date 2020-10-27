@@ -1,8 +1,8 @@
 name: sentry-backend-release
 
 on:
-  release:
-    types: [published, prereleased]
+  push:
+    branches: [ master ]
 
 
 jobs:
