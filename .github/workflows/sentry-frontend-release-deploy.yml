@@ -18,7 +18,7 @@ jobs:
           SENTRY_ORG: omella
           SENTRY_PROJECT: testing_sourcemaps
         with:
-          version: ${{ github.ref }}
+          version: ${{ github.sha }}
           environment: qa
-          releaseNamePrefix: myAwesomeProject-
+          version_prefix: test-
           sourcemaps: maps/
