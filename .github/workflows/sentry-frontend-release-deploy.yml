@@ -20,5 +20,5 @@ jobs:
 	with:
           tagName: ${{ github.ref }}
           environment: production
-          releaseNamePrefix: frontend-
+          releaseNamePrefix: front-
           sourcemaps: build/static/js
