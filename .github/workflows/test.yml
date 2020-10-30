@@ -9,10 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set version
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
       - name: Check outputs
-        run: echo ${{ steps.vars.outputs.sha_short }}
+        run: echo ${SHORT_SHA}
       - name: Checkout code
         uses: actions/checkout@master
       - name: Create a frontend Sentry.io release
@@ -22,7 +21,7 @@ jobs:
           SENTRY_ORG: omella
           SENTRY_PROJECT: omella-frontend
         with:
-          version: v1.2
+          version: ${SHORT_SHA}
           environment: omella-staging.herokuapp.com
           sourcemaps: public/api/vandal/js
       - name: Checkout code
@@ -34,5 +33,5 @@ jobs:
           SENTRY_ORG: omella
           SENTRY_PROJECT: omella-backend
         with:
-          version: v1.1
+          version: ${SHORT_SHA}
           environment: omella-staging.herokuapp.com
