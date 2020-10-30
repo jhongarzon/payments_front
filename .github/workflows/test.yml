@@ -22,7 +22,7 @@ jobs:
           SENTRY_ORG: omella
           SENTRY_PROJECT: omella-frontend
         with:
-          version: ${{ steps.vars.outputs.sha_short }}
+          version: v1.2
           environment: omella-staging.herokuapp.com
           sourcemaps: public/api/vandal/js
       - name: Checkout code
@@ -34,5 +34,5 @@ jobs:
           SENTRY_ORG: omella
           SENTRY_PROJECT: omella-backend
         with:
-          version: ${{ steps.vars.outputs.sha_short }}
+          version: v1.1
           environment: omella-staging.herokuapp.com
